@@ -58,7 +58,7 @@ public class Timer
         }
     }
 
-    public void SetName(int position, string name)
+    public void SetName(string name, int position = 0)
     {
         if (ErrorPosition(position, "SetName"))
         {
@@ -67,7 +67,7 @@ public class Timer
         times[position].SetName(name);
     }
 
-    public void InvokeOnTimeIsZero(int timeSlot)
+    public void InvokeOnTimeIsZero(int timeSlot = 0)
     {
         times[timeSlot].OnTimeIsZero?.Invoke(this, EventArgs.Empty);
     }
@@ -76,7 +76,7 @@ public class Timer
     /// </summary>
     /// <param name="position"></param>
     /// <param name="amount"></param>
-    public void SetTime(int position, float amount)
+    public void SetTime(float amount, int position= 0)
     {
         if (ErrorPosition(position,"SetTime"))
         {
@@ -94,7 +94,7 @@ public class Timer
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    public float GetTime(int position)
+    public float GetTime(int position = 0)
     {
         if (ErrorPosition(position,"GetTime"))
         {
@@ -107,7 +107,7 @@ public class Timer
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    public bool IsTimeZero(int position)
+    public bool IsTimeZero(int position = 0)
     {
         if (ErrorPosition(position,"IsTimeZero"))
         {
@@ -143,7 +143,7 @@ public class Timer
     /// Use SetTime if you wish to invoke an action instantly
     /// </summary>
     /// <param name="position"></param>
-    public void ResetSpecificToZero(int position)
+    public void ResetSpecificToZero(int position = 0)
     {
         if (ErrorPosition(position, "ResetSpecificToZero"))
         {

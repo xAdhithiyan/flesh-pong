@@ -11,12 +11,16 @@ public class PlayerComponentManager : MonoBehaviour
     public PlayerInputs inputs {  get; private set; }
     [field: SerializeField]
     public PlayerValues values { get; private set; }
+    [field: SerializeField]
+    public PlayerAttacks attacks{ get; private set; }
+
 
     public void SetValues()
     {
         controller = GetComponentInChildren<PlayerController>();
         inputs = GetComponentInChildren<PlayerInputs>();
         values = GetComponentInChildren<PlayerValues>();
+        attacks = GetComponentInChildren<PlayerAttacks>();
         SetPCM();
     }
 

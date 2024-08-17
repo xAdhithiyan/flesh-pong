@@ -41,7 +41,7 @@ public class TimerManager : MonoBehaviour
     /// <param name="amount"></param>
     /// <param name="owner"></param>
     /// <returns></returns>
-    public Timer GenerateTimers(int amount, GameObject owner)
+    public Timer GenerateTimers(GameObject owner, int amount = 1)
     {
         if(amount <= 0)
         {

@@ -13,7 +13,7 @@ public enum playerState
     dashing,
     hit
 }
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, PCMInterface
 {
     private enum coolDownTimers : int
     {
@@ -28,8 +28,8 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider2D col2D;
     [SerializeField]
     private CircleCollider2D circCol2D;
-    [SerializeField]
-    private PlayerComponentManager PCM;
+    [field: SerializeField]
+    public PlayerComponentManager PCM { get; set; }
 
     [Header("Speed Stats")]
 
@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
         RemoveBufferInput();
         isDashing = true;
         currentDashCharges--;
-        timers.SetTime((int)coolDownTimers.dashCastCD, dashCDTimer + dashDuration);
+        timers.SetTime(dashCDTimer + dashDuration, (int)coolDownTimers.dashCastCD);
 
         //GameManager.Instance.AudioManager.PlaySound(AudioRef.Dash, false, 0.65f);
         BeginDash(dashDistance, dashDuration, direction);
@@ -326,7 +326,7 @@ public class PlayerController : MonoBehaviour
 
     private void StopDash()
     {
-        timers.SetTime((int)coolDownTimers.dashCD, dashRechargeRate);
+        timers.SetTime(dashRechargeRate, (int)coolDownTimers.dashCD);
         if (dashCoroutine != null)
         {
             dashCoroutine = null;

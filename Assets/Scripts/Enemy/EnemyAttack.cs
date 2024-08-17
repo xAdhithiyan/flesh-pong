@@ -46,4 +46,9 @@ public class EnemyAttack : MonoBehaviour
 		rb.velocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal) * ReflectValue;
 		startReducingSpeed = true;
 	}
+
+	public void Redirect(Vector2 newDir)
+	{
+		rb.velocity = newDir.normalized * rb.velocity.magnitude;
+	}
 }

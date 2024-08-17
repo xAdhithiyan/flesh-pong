@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using KevinCastejon.MoreAttributes;
 
 public class PlayerValues : MonoBehaviour, PCMInterface
 {
@@ -9,14 +10,13 @@ public class PlayerValues : MonoBehaviour, PCMInterface
     [field: SerializeField]
     public PlayerComponentManager PCM {  get; set; }
     [field: SerializeField]
-    public Transform CamForward { get; private set; }
-    [field: SerializeField]
-    public Transform BodyForward { get; private set; }
-
-    public GameObject DebugObj;
+    public int StartingHealth;
+    [SerializeField, ReadOnly]
+    private int CurrentHealth;
 
     void Start()
     {
+        CurrentHealth = StartingHealth;
     }
 
     // Update is called once per frame
@@ -25,11 +25,13 @@ public class PlayerValues : MonoBehaviour, PCMInterface
         //UpdateCamForward();
     }
 
-    private void UpdateCamForward()
+    public void UpdateHealth(int damageToTake)
     {
-        Vector3 forward = Camera.main.transform.forward;
-        forward.y = 0;
-        CamForward.forward = forward.normalized;
-        DebugObj.transform.LookAt(transform.position + CamForward.forward);
+        CurrentHealth -= damageToTake;
+        if (CurrentHealth < 0)
+        {
+            CurrentHealth = 0;
+            //death stuff
+        }
     }
 }

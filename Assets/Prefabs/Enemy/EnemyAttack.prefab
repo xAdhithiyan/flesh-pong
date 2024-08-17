@@ -162,6 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 3256963280985925932}
-  projectileSpeed: 20
+  projectileSpeed: 5
   reductionSpeed: 0.98
   ReflectValue: 2

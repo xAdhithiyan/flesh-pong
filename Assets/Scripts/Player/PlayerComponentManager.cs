@@ -35,6 +35,10 @@ public class PlayerComponentManager : MonoBehaviour
     [UnityEditor.Callbacks.DidReloadScripts]
     private static void OnScriptsReloaded()
     {
+        UpdateScripts();
+    }
+    public static void UpdateScripts()
+    {
         string assetPath = "Assets/Prefabs/Player/Player.prefab";
 
         GameObject contentsRoot = PrefabUtility.LoadPrefabContents(assetPath);

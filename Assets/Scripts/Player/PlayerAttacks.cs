@@ -22,11 +22,11 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     [Tooltip("Time in seconds before each hammer size stage")]
     private List<float> chargeRate;
 
-    [SerializeField]
-    private Collider2D hammerHitbox;
     private Timer chargeTime;
     [SerializeField, ReadOnly]
     private ChargeState chargeState = ChargeState.fast;
+    [SerializeField]
+    private List<EnemyAttack> Attacks = new List<EnemyAttack>();
 
     #region input
 
@@ -55,7 +55,13 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     }
     private void ReleaseAttack()
     {
-
+        if(Attacks.Count > 0)
+        {
+            foreach (EnemyAttack attack in Attacks)
+            {
+                attack.Redirect(attack.transform.position - transform.position);
+            }
+        }
         chargeTime.ResetSpecificToZero();
         chargeState = ChargeState.fast;
     }
@@ -69,6 +75,17 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.TryGetComponent(out EnemyAttack projectile))
+        {
+            Attacks.Add(projectile);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<EnemyAttack>(out EnemyAttack projectile))
+        {
+            Attacks.Remove(projectile);
+        }
     }
 }

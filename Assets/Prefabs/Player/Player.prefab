@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 4602897323821464910}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -473,7 +473,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -524,9 +524,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PCM>k__BackingField: {fileID: 3702488318073749442}
-  chargeRate: []
+  chargeRate:
+  - 1
+  - 2.5
+  - 3
+  - 4
   hammerHitbox: {fileID: 0}
   chargeState: 0
+  Attacks: []
 --- !u!1 &7464714030381970195
 GameObject:
   m_ObjectHideFlags: 0

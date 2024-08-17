@@ -24,8 +24,9 @@ public class EnemyAttack : MonoBehaviour
 	{
 		player = GameObject.FindWithTag(Tags.T_Player);
 		enemy = GameObject.FindWithTag(Tags.T_Enemy);
+
 		rb.velocity = (player.GetComponent<Transform>().position - transform.position).normalized * projectileSpeed;
-		transform.right = enemy.GetComponent<Enemy>().towardsPlayer;
+		transform.up = enemy.GetComponent<Enemy>().towardsPlayer;
 	}
 	private void Update()
 	{

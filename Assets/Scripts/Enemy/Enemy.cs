@@ -29,16 +29,24 @@ public class Enemy : MonoBehaviour
 	
 	private void Start()
 	{
-        playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
-        towardsPlayer = (playerPositon.position - transform.position).normalized;
+		playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
+		towardsPlayer = (playerPositon.position - transform.position).normalized;
 		//rb.velocity = towardsPlayer * moveSpeed;	
 	  StartCoroutine(ShootProjectiles());
 	}
 
-	// will do later
+	private void Update()
+	{
+		checkPlayer();
+	}
 	private void checkPlayer()
 	{
-
+		Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+		Bounds bound = new Bounds(transform.position, Vector3.zero);
+		if(GeometryUtility.TestPlanesAABB(planes, bound))
+		{
+			Debug.Log("hello");
+		}
 	}
 
 	private IEnumerator ShootProjectiles() { 

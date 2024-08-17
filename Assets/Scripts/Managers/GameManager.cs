@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     [field: SerializeField] public AudioManager AudioManager { get; private set; }
     [field: SerializeField] public TimerManager TimerManager { get; private set; }
+    public PlayerInputMap playerInputMap { get; private set; }
     private void Awake()
     {
         if (Instance != null)
@@ -23,7 +24,16 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        //playerInputs = new PlayerInputs();
+        playerInputMap = new PlayerInputMap();
+    }
+
+    public void EnablePlayer()
+    {
+        playerInputMap.Player.Enable();
+    }
+    public void DisablePlayer()
+    {
+        playerInputMap.Player.Disable();
     }
     // Start is called before the first frame update
     void Start()

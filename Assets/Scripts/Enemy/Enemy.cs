@@ -29,7 +29,8 @@ public class Enemy : MonoBehaviour
 	
 	private void Start()
 	{
-		towardsPlayer = (playerPositon.position - transform.position).normalized;
+        playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
+        towardsPlayer = (playerPositon.position - transform.position).normalized;
 		//rb.velocity = towardsPlayer * moveSpeed;	
 	  StartCoroutine(ShootProjectiles());
 	}

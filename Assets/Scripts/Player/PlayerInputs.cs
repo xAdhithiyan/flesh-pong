@@ -20,6 +20,8 @@ public class PlayerInputs : MonoBehaviour, PCMInterface
         playerActions.Move.canceled += PCM.controller.SetDirection;
         playerActions.LookMouse.performed += PCM.controller.MousePosition;
         playerActions.Dash.performed += PCM.controller.BufferDash;
+        playerActions.FirePrimary.performed += PCM.attacks.AttackHeld;
+        playerActions.FirePrimary.canceled += PCM.attacks.AttackReleased;
     }
 
     private void OnDisable()
@@ -28,6 +30,8 @@ public class PlayerInputs : MonoBehaviour, PCMInterface
         playerActions.Move.canceled -= PCM.controller.SetDirection;
         playerActions.LookMouse.performed -= PCM.controller.MousePosition;
         playerActions.Dash.performed -= PCM.controller.BufferDash;
+        playerActions.FirePrimary.performed -= PCM.attacks.AttackHeld;
+        playerActions.FirePrimary.canceled -= PCM.attacks.AttackReleased;
         GameManager.Instance.DisablePlayer();
     }
 

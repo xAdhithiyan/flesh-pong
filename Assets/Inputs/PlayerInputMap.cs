@@ -98,6 +98,33 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScaleUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""828a0a77-4016-45c5-b86e-d5137521a271"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScaleDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""e3b2f694-085d-4b14-9477-9e60e789ff4d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scale"",
+                    ""type"": ""Value"",
+                    ""id"": ""23c54672-2bb6-4d3a-9e69-c965160c66a9"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -320,6 +347,61 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
                     ""action"": ""FireSecondary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""836aabc7-f82e-4109-941e-fc981d517d5a"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6dcd6ba-7d18-48df-a33f-ed24044bbecb"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""33348095-28e9-4ecb-8892-c28add2c3901"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scale"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""f3f90420-64f4-4ee0-bb1f-53873aa0908d"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scale"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""36e7aedb-dc64-459b-af53-8099136cb717"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scale"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1253,6 +1335,9 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
         m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
         m_Player_FirePrimary = m_Player.FindAction("FirePrimary", throwIfNotFound: true);
         m_Player_FireSecondary = m_Player.FindAction("FireSecondary", throwIfNotFound: true);
+        m_Player_ScaleUp = m_Player.FindAction("ScaleUp", throwIfNotFound: true);
+        m_Player_ScaleDown = m_Player.FindAction("ScaleDown", throwIfNotFound: true);
+        m_Player_Scale = m_Player.FindAction("Scale", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1346,6 +1431,9 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Escape;
     private readonly InputAction m_Player_FirePrimary;
     private readonly InputAction m_Player_FireSecondary;
+    private readonly InputAction m_Player_ScaleUp;
+    private readonly InputAction m_Player_ScaleDown;
+    private readonly InputAction m_Player_Scale;
     public struct PlayerActions
     {
         private @PlayerInputMap m_Wrapper;
@@ -1358,6 +1446,9 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
         public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputAction @FirePrimary => m_Wrapper.m_Player_FirePrimary;
         public InputAction @FireSecondary => m_Wrapper.m_Player_FireSecondary;
+        public InputAction @ScaleUp => m_Wrapper.m_Player_ScaleUp;
+        public InputAction @ScaleDown => m_Wrapper.m_Player_ScaleDown;
+        public InputAction @Scale => m_Wrapper.m_Player_Scale;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1391,6 +1482,15 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
             @FireSecondary.started += instance.OnFireSecondary;
             @FireSecondary.performed += instance.OnFireSecondary;
             @FireSecondary.canceled += instance.OnFireSecondary;
+            @ScaleUp.started += instance.OnScaleUp;
+            @ScaleUp.performed += instance.OnScaleUp;
+            @ScaleUp.canceled += instance.OnScaleUp;
+            @ScaleDown.started += instance.OnScaleDown;
+            @ScaleDown.performed += instance.OnScaleDown;
+            @ScaleDown.canceled += instance.OnScaleDown;
+            @Scale.started += instance.OnScale;
+            @Scale.performed += instance.OnScale;
+            @Scale.canceled += instance.OnScale;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1419,6 +1519,15 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
             @FireSecondary.started -= instance.OnFireSecondary;
             @FireSecondary.performed -= instance.OnFireSecondary;
             @FireSecondary.canceled -= instance.OnFireSecondary;
+            @ScaleUp.started -= instance.OnScaleUp;
+            @ScaleUp.performed -= instance.OnScaleUp;
+            @ScaleUp.canceled -= instance.OnScaleUp;
+            @ScaleDown.started -= instance.OnScaleDown;
+            @ScaleDown.performed -= instance.OnScaleDown;
+            @ScaleDown.canceled -= instance.OnScaleDown;
+            @Scale.started -= instance.OnScale;
+            @Scale.performed -= instance.OnScale;
+            @Scale.canceled -= instance.OnScale;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1700,6 +1809,9 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
         void OnEscape(InputAction.CallbackContext context);
         void OnFirePrimary(InputAction.CallbackContext context);
         void OnFireSecondary(InputAction.CallbackContext context);
+        void OnScaleUp(InputAction.CallbackContext context);
+        void OnScaleDown(InputAction.CallbackContext context);
+        void OnScale(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

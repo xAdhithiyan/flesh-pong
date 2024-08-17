@@ -22,8 +22,7 @@ public class Enemy : MonoBehaviour
 
 	[Header("Prefabs")]
 	[SerializeField]
-	private EnemyAttack _enemyAttackPrefab;
-	private EnemyAttack _singleEnemyAttack;
+	private Projectile _enemyAttackPrefab;
 
 	[Header("Attack")]
 	[SerializeField]
@@ -105,7 +104,8 @@ public class Enemy : MonoBehaviour
 	{
 		if (inCameraForAttack)
 		{
-			_singleEnemyAttack = Instantiate(_enemyAttackPrefab, transform.position + towardsPlayer, Quaternion.identity);
+			Projectile spawned = Instantiate(_enemyAttackPrefab, transform.position + towardsPlayer, Quaternion.identity);
+			spawned.Initialise(towardsPlayer, towardsPlayer, 1);
 		}
 	}
 

@@ -17,12 +17,13 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     }
     [field: SerializeField]
     public PlayerComponentManager PCM { get ; set; }
+    
     [SerializeField]
     [Tooltip("Time in seconds before each hammer size stage")]
     private List<float> chargeRate;
 
-    private bool Charging;
-
+    [SerializeField]
+    private Collider2D hammerHitbox;
     private Timer chargeTime;
     [SerializeField, ReadOnly]
     private ChargeState chargeState = ChargeState.fast;
@@ -31,13 +32,11 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
 
     public void AttackHeld(InputAction.CallbackContext context)
     {
-        Charging = true;
         chargeTime.SetTime(chargeRate[0]);
     }
 
     public void AttackReleased(InputAction.CallbackContext context)
     {
-        Charging = false;
         ReleaseAttack();
     }
 
@@ -67,5 +66,9 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
             chargeTime.SetTime(chargeRate[(int)chargeState]);
             chargeState++;
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
     }
 }

@@ -131,6 +131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1788259868496821328, guid: 3bbe442524be4c4498ed2e07f0dbe0f1, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 2409262214989436661, guid: 3bbe442524be4c4498ed2e07f0dbe0f1, type: 3}
       propertyPath: m_TagString
       value: Player
@@ -188,11 +192,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bbe442524be4c4498ed2e07f0dbe0f1, type: 3}
---- !u!4 &303585844 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 814412664124096760, guid: 3bbe442524be4c4498ed2e07f0dbe0f1, type: 3}
-  m_PrefabInstance: {fileID: 111647317}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &410089999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -342,67 +341,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1614762596
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4596377443226933602, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_Name
-      value: EnemyAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833005682563364381, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: projectileSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.019
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.425
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8165735966382805908, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
 --- !u!1 &2099294005
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,10 +373,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b74867b7c8a8f84ea4fd69cd08683f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPositon: {fileID: 303585844}
+  playerPositon: {fileID: 0}
   rb: {fileID: 2099294007}
   moveSpeed: 5
   _enemyAttackPrefab: {fileID: 4833005682563364381, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
+  waitForNextAttack: 2
   towardsPlayer: {x: 0, y: 0, z: 0}
 --- !u!50 &2099294007
 Rigidbody2D:
@@ -577,4 +516,3 @@ SceneRoots:
   - {fileID: 410089999}
   - {fileID: 111647317}
   - {fileID: 2099294009}
-  - {fileID: 1614762596}

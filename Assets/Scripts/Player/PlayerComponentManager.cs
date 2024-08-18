@@ -13,6 +13,8 @@ public class PlayerComponentManager : MonoBehaviour
     public PlayerValues values { get; private set; }
     [field: SerializeField]
     public PlayerAttacks attacks{ get; private set; }
+    [field: SerializeField]
+    public PlayerAnimation anims{ get; private set; }
 
 
     public void SetValues()
@@ -21,6 +23,8 @@ public class PlayerComponentManager : MonoBehaviour
         inputs = GetComponentInChildren<PlayerInputs>();
         values = GetComponentInChildren<PlayerValues>();
         attacks = GetComponentInChildren<PlayerAttacks>();
+        anims = GetComponentInChildren<PlayerAnimation>();
+
         SetPCM();
     }
 

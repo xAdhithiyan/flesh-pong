@@ -29,16 +29,27 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     private List<Projectile> Attacks = new List<Projectile>();
     [SerializeField]
     private Transform hammerScale;
+    [SerializeField]
+    private float attackLag;
+    [SerializeField]
+    private Animator anim;
+
+    private bool isCharging;
 
     #region input
 
     public void AttackHeld(InputAction.CallbackContext context)
     {
+        if (!chargeTime.IsTimeZero(1))
+            return;
         chargeTime.SetTime(chargeRate[0]);
+        isCharging = true;
     }
 
     public void AttackReleased(InputAction.CallbackContext context)
     {
+        if(!isCharging) return;
+        isCharging = false;
         ReleaseAttack();
     }
 
@@ -46,7 +57,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     // Start is called before the first frame update
     void Start()
     {
-        chargeTime = GameManager.Instance.TimerManager.GenerateTimers(gameObject);
+        chargeTime = GameManager.Instance.TimerManager.GenerateTimers(gameObject,2);
         chargeTime.times[0].OnTimeIsZero += currentChargeStage;
     }
 
@@ -57,6 +68,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     }
     private void ReleaseAttack()
     {
+        anim.Play("hammer");
         if(Attacks.Count > 0)
         {
             foreach (Projectile attack in Attacks)
@@ -65,7 +77,13 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
             }
         }
         chargeTime.ResetSpecificToZero();
+        chargeTime.SetTime(attackLag, 1);
         chargeState = ChargeState.fast;
+    }
+
+    private void ResetScale()
+    {
+        hammerScale.localScale = Vector3.one;
     }
     private void currentChargeStage(object sender, EventArgs e)
     {

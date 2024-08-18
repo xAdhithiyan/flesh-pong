@@ -27,6 +27,8 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     private ChargeState chargeState = ChargeState.fast;
     [SerializeField]
     private List<Projectile> Attacks = new List<Projectile>();
+    [SerializeField]
+    private Transform hammerScale;
 
     #region input
 
@@ -59,7 +61,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
         {
             foreach (Projectile attack in Attacks)
             {
-                attack.Redirect(attack.transform.position - transform.position,(int)chargeState + 1);
+                attack.Redirect(attack.transform.position - transform.position,((int)chargeState + 1)*PCM.values.GetCurrentScale());
             }
         }
         chargeTime.ResetSpecificToZero();
@@ -71,6 +73,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
         {
             chargeTime.SetTime(chargeRate[(int)chargeState]);
             chargeState++;
+            hammerScale.localScale = Vector3.one * (((int)chargeState * 0.25f) + 1);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

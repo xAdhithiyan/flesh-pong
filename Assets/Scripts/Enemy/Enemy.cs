@@ -134,11 +134,15 @@ public class Enemy : MonoBehaviour, DamageInterface
     public void TakeDamage(int damage, int speed, out int newSpeed)
     {
 		currentHealth -= damage;
-		if (currentHealth < 0)
+		if (currentHealth <= 0)
 		{
-            newSpeed = speed - Mathf.FloorToInt(-currentHealth / speed);
+			if (currentHealth < 0)
+				newSpeed = speed - Mathf.CeilToInt(-currentHealth / speed);
+			else
+				newSpeed = 0;
 			GameManager.Instance.EnemyManager.RemoveEnemy();
 			Destroy(gameObject);
+			return;
         }
 		else
 		{

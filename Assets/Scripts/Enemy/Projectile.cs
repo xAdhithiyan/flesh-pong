@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KevinCastejon.MoreAttributes;
 
 public class Projectile : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class Projectile : MonoBehaviour
     private bool startDespawn = false;
 
 	private int projectileDamage;
+	[SerializeField,ReadOnly]
 	private int currentProjSpeed = 1;
 
 	[SerializeField]
@@ -72,31 +74,31 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
 	{
-		Debug.Log(rb.velocity.magnitude  + " " + rb.velocity);
 		int newSpeed;
 		if (collision.gameObject.TryGetComponent(out DamageInterface hitTarget))
 		{
             lifeTime.SetTime(projectileLifetime);
-            startReducingSpeed = true;
-            hitTarget.TakeDamage(projectileDamage, projectileSize, out newSpeed);
-
+            hitTarget.TakeDamage(projectileDamage, currentProjSpeed, out newSpeed);
 
             if (newSpeed > 0)
             {
                 projectileDamage = newSpeed * projectileSize;
                 currentProjSpeed = newSpeed;
-                rb.velocity = rb.velocity.normalized * newSpeed;
+                rb.velocity = rb.velocity.normalized * newSpeed * projectileSpeed;
                 return;
+            }
+			else
+			{
+                startReducingSpeed = true;
             }
         }
         rb.velocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal) * ReflectValue;
-
     }
 
     public void Redirect(Vector2 newDir, int Strength)
 	{
-		currentProjSpeed = Strength - projectileSize;
-		if (currentProjSpeed < 0)
+		currentProjSpeed = Strength - projectileSize + 1;
+		if (currentProjSpeed < 1)
 			return;
 		projectileDamage = currentProjSpeed * projectileSize;
 		rb.velocity = newDir.normalized * projectileSpeed * currentProjSpeed;

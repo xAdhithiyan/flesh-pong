@@ -99,18 +99,6 @@ public class PlayerController : MonoBehaviour, PCMInterface
     private bool isDashing;
     [SerializeField, ReadOnly]
     private bool isMoving;
-    /*[SerializeField, ReadOnly]
-    private bool isAttacking;
-    [SerializeField, ReadOnly]
-    private bool isAttackEnd;*/
-    [SerializeField, ReadOnly]
-    private bool isStartingAbility;
-    [SerializeField, ReadOnly]
-    private bool isUsingAbility;
-    [SerializeField, ReadOnly]
-    private bool isAbilityLag;
-    [SerializeField, ReadOnly]
-    private bool isPerfectDodge;
 
     private LayerMask initialLayer;
     #region Unity Function
@@ -133,7 +121,6 @@ public class PlayerController : MonoBehaviour, PCMInterface
     void Update()
     {
         StateDecider();
-        UpdateLastDirection();
         ExecuteInput();
         UpdateMousePos();
         AimPoint();
@@ -153,7 +140,7 @@ public class PlayerController : MonoBehaviour, PCMInterface
     {
         direction = context.ReadValue<Vector2>().normalized;
         if (direction != Vector2.zero)
-            lastDirection = direction;
+            lastDirection = context.ReadValue<Vector2>();
     }
 
 
@@ -223,17 +210,7 @@ public class PlayerController : MonoBehaviour, PCMInterface
     #endregion
 
     #region Movement
-    private playerState[] allowedLastDir = { playerState.moving, playerState.idle,  };
-    private void UpdateLastDirection()
-    {
-        if (!CheckStates(allowedLastDir))
-            return;
 
-        if (!direction.Equals(Vector2.zero) && !lastDirection.Equals(direction))
-        {
-            lastDirection = direction;
-        }
-    }
     private void Move()
     {
         isMoving = false;

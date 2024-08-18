@@ -19,39 +19,88 @@ public class Projectile : MonoBehaviour
 	[SerializeField]
 	private int projectileSize;
 	private bool startReducingSpeed = false;
+    private bool startDespawn = false;
 
+	private int projectileDamage;
+	private int currentProjSpeed = 1;
 
-	private void Start()
+	[SerializeField]
+	private float projectileLifetime;
+
+	[SerializeField]
+	private LayerMask IgnoreLayer;
+
+	private Timer lifeTime;
+    private void Start()
 	{
+		lifeTime = GameManager.Instance.TimerManager.GenerateTimers(gameObject);
+		lifeTime.SetTime(projectileLifetime);
 	}
 	public void Initialise(Vector2 dir, Vector3 Rtransform, int Scale)
-	{
-		rb.velocity = dir.normalized * projectileSpeed;
+    {
+        rb.excludeLayers += IgnoreLayer;
+        rb.velocity = dir.normalized * projectileSpeed;
 		transform.right = Rtransform;
 		projectileSize = Scale;
-        transform.localScale = Vector3.one * projectileSize;
+		projectileDamage = Scale;
+        transform.localScale *= projectileSize;
     }
 	private void Update()
 	{
-		if (startReducingSpeed)
-		{
-			rb.velocity *= reductionSpeed;
-		}
+		
 
-		if(rb.velocity.magnitude < 0.1f)
+		if((rb.velocity.magnitude < 0.1f || lifeTime.IsTimeZero()) && !startDespawn)
 		{
-			Destroy(gameObject);
+			startDespawn = true;
+            lifeTime.DeleteTimer();
+            Invoke("DespawnProcess", 1.0f);
 		}
 	}
 
-	private void OnCollisionEnter2D(Collision2D collision)
-	{
-		rb.velocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal) * ReflectValue;
-		startReducingSpeed = true;
-	}
+    private void FixedUpdate()
+    {
+        if (startReducingSpeed)
+        {
+            rb.velocity *= reductionSpeed;
+        }
+    }
 
-	public void Redirect(Vector2 newDir, int Strength)
+    private void DespawnProcess()
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
 	{
-		rb.velocity = newDir.normalized * projectileSpeed * (Strength - projectileSize);
+		Debug.Log(rb.velocity.magnitude  + " " + rb.velocity);
+		int newSpeed;
+		if (collision.gameObject.TryGetComponent(out DamageInterface hitTarget))
+		{
+            lifeTime.SetTime(projectileLifetime);
+            startReducingSpeed = true;
+            hitTarget.TakeDamage(projectileDamage, projectileSize, out newSpeed);
+
+
+            if (newSpeed > 0)
+            {
+                projectileDamage = newSpeed * projectileSize;
+                currentProjSpeed = newSpeed;
+                rb.velocity = rb.velocity.normalized * newSpeed;
+                return;
+            }
+        }
+        rb.velocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal) * ReflectValue;
+
+    }
+
+    public void Redirect(Vector2 newDir, int Strength)
+	{
+		currentProjSpeed = Strength - projectileSize;
+		if (currentProjSpeed < 0)
+			return;
+		projectileDamage = currentProjSpeed * projectileSize;
+		rb.velocity = newDir.normalized * projectileSpeed * currentProjSpeed;
+		lifeTime.SetTime(projectileLifetime);
+		rb.excludeLayers -= IgnoreLayer;
 	}
 }

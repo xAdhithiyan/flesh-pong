@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3464961611596897759}
   - component: {fileID: 3256963280985925932}
   - component: {fileID: 4833005682563364381}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -165,3 +165,8 @@ MonoBehaviour:
   projectileSpeed: 5
   reductionSpeed: 0.98
   ReflectValue: 2
+  projectileSize: 0
+  projectileLifetime: 10
+  IgnoreLayer:
+    serializedVersion: 2
+    m_Bits: 256

@@ -4,7 +4,7 @@ using UnityEngine;
 using KevinCastejon.MoreAttributes;
 using UnityEngine.InputSystem.LowLevel;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, DamageInterface
 {
 	[Header("Core Variables")]
 	[SerializeField]
@@ -28,6 +28,15 @@ public class Enemy : MonoBehaviour
 	[SerializeField]
 	private float waitForNextAttack;
 
+	[Header("Stats")]
+	[SerializeField]
+	private int Scale = 1;
+	[SerializeField]
+	private int ProjectileSize = 1;
+	[SerializeField, ReadOnly]
+	private int currentHealth = 5;
+
+
 	[ReadOnly]
 	public Vector3 towardsPlayer;
 
@@ -44,6 +53,15 @@ public class Enemy : MonoBehaviour
 	{
 	  StartCoroutine(ShootProjectiles());
 		currentState = enemyState.idle;
+
+      playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
+    }
+
+	public void Initialise(int scale,int projSize)
+	{
+		Scale = scale;
+		ProjectileSize = projSize;
+		currentHealth = scale * 5;
 	}
 
 	private void Update()
@@ -55,7 +73,6 @@ public class Enemy : MonoBehaviour
 
 	private void movement()
 	{
-		playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
 		towardsPlayer = (playerPositon.position - transform.position).normalized;
 
 		if (currentState == enemyState.moving)
@@ -105,7 +122,7 @@ public class Enemy : MonoBehaviour
 		if (inCameraForAttack)
 		{
 			Projectile spawned = Instantiate(_enemyAttackPrefab, transform.position + towardsPlayer, Quaternion.identity);
-			spawned.Initialise(towardsPlayer, towardsPlayer, 1);
+			spawned.Initialise(towardsPlayer, towardsPlayer, ((Scale-1)*5) + ProjectileSize);
 		}
 	}
 
@@ -113,4 +130,19 @@ public class Enemy : MonoBehaviour
 	{
 		Gizmos.DrawWireSphere(transform.position, checkRadius);
 	}
+
+    public void TakeDamage(int damage, int speed, out int newSpeed)
+    {
+		currentHealth -= damage;
+		if (currentHealth < 0)
+		{
+            newSpeed = speed - Mathf.FloorToInt(-currentHealth / speed);
+			GameManager.Instance.EnemyManager.RemoveEnemy();
+			Destroy(gameObject);
+        }
+		else
+		{
+			newSpeed = 0;
+		}
+    }
 }

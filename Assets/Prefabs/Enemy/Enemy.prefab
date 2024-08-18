@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6932232010594822246}
   - component: {fileID: 2394678546913960728}
   - component: {fileID: 3249774487179842288}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -167,7 +167,10 @@ MonoBehaviour:
   checkRadius: 4
   playerLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
   _enemyAttackPrefab: {fileID: 4833005682563364381, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
   waitForNextAttack: 1
+  Scale: 0
+  ProjectileSize: 0
+  currentHealth: 0
   towardsPlayer: {x: 0, y: 0, z: 0}

@@ -13,10 +13,18 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     public int StartingHealth;
     [SerializeField, ReadOnly]
     private int CurrentHealth;
+    [SerializeField]
+    private int CurrentScale;
 
     void Start()
     {
         CurrentHealth = StartingHealth;
+        CurrentScale = 1;
+    }
+
+    public int GetCurrentScale()
+    {
+        return CurrentScale;
     }
 
     // Update is called once per frame

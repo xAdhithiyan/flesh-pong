@@ -198,6 +198,7 @@ MonoBehaviour:
   <PCM>k__BackingField: {fileID: 1395768840765028413}
   StartingHealth: 0
   CurrentHealth: 0
+  CurrentScale: 0
 --- !u!114 &4708750169033218675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,3 +615,4 @@ MonoBehaviour:
   - 4
   chargeState: 0
   Attacks: []
+  hammerScale: {fileID: 0}

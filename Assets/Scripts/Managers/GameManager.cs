@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     [field: SerializeField] public AudioManager AudioManager { get; private set; }
     [field: SerializeField] public TimerManager TimerManager { get; private set; }
+    [field: SerializeField] public EnemyManager EnemyManager { get; private set; }
     public PlayerInputMap playerInputMap { get; private set; }
     private void Awake()
     {
@@ -45,5 +47,24 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public static void UpdateScripts()
+    {
+        string assetPath = "Assets/Prefabs/GameManager.prefab";
+
+        GameObject contentsRoot = PrefabUtility.LoadPrefabContents(assetPath);
+
+        contentsRoot.GetComponentInChildren<GameManager>().SetValues();
+
+        PrefabUtility.SaveAsPrefabAsset(contentsRoot, assetPath);
+        PrefabUtility.UnloadPrefabContents(contentsRoot);
+    }
+
+    public void SetValues()
+    {
+        AudioManager = GetComponentInChildren<AudioManager>();
+        TimerManager = GetComponentInChildren<TimerManager>();
+        EnemyManager = GetComponentInChildren<EnemyManager>();
     }
 }

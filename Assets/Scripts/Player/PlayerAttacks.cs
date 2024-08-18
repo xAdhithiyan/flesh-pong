@@ -26,7 +26,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     [SerializeField, ReadOnly]
     private ChargeState chargeState = ChargeState.fast;
     [SerializeField]
-    private List<EnemyAttack> Attacks = new List<EnemyAttack>();
+    private List<Projectile> Attacks = new List<Projectile>();
 
     #region input
 
@@ -57,9 +57,9 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     {
         if(Attacks.Count > 0)
         {
-            foreach (EnemyAttack attack in Attacks)
+            foreach (Projectile attack in Attacks)
             {
-                attack.Redirect(attack.transform.position - transform.position);
+                attack.Redirect(attack.transform.position - transform.position,(int)chargeState + 1);
             }
         }
         chargeTime.ResetSpecificToZero();
@@ -75,7 +75,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out EnemyAttack projectile))
+        if (collision.TryGetComponent(out Projectile projectile))
         {
             Attacks.Add(projectile);
         }
@@ -83,7 +83,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<EnemyAttack>(out EnemyAttack projectile))
+        if (collision.TryGetComponent<Projectile>(out Projectile projectile))
         {
             Attacks.Remove(projectile);
         }

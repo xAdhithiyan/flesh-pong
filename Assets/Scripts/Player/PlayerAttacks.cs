@@ -101,7 +101,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
             Attacks.Add(projectile);
         }
     }
-
+        
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Projectile>(out Projectile projectile))

@@ -15,11 +15,14 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     private int CurrentHealth;
     [SerializeField]
     private int CurrentScale;
+    [SerializeField]
+    private int TotalMeat;
 
     void Start()
     {
         CurrentHealth = StartingHealth;
         CurrentScale = 1;
+        TotalMeat = 0;
     }
 
     public int GetCurrentScale()
@@ -54,5 +57,10 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
         {
             newSpeed = 0;
         }
+    }
+
+    public void IncreaseMeat()
+    {
+        TotalMeat++;
     }
 }

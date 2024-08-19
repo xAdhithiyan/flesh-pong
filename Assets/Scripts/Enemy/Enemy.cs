@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using KevinCastejon.MoreAttributes;
 using UnityEngine.InputSystem.LowLevel;
+using System.Xml.Schema;
+using System.Runtime.CompilerServices;
+using System.IO.IsolatedStorage;
 
 public class Enemy : MonoBehaviour, DamageInterface
 {
@@ -23,6 +26,8 @@ public class Enemy : MonoBehaviour, DamageInterface
 	[Header("Prefabs")]
 	[SerializeField]
 	private Projectile _enemyAttackPrefab;
+	[SerializeField]
+	private Meat meatPrefab;
 
 	[Header("Attack")]
 	[SerializeField]
@@ -36,6 +41,8 @@ public class Enemy : MonoBehaviour, DamageInterface
 	[SerializeField, ReadOnly]
 	private int currentHealth = 5;
 
+	[Header("Health")]
+	[SerializeField]
 
 	[ReadOnly]
 	public Vector3 towardsPlayer;
@@ -51,10 +58,10 @@ public class Enemy : MonoBehaviour, DamageInterface
 
 	private void Start()
 	{
-	  StartCoroutine(ShootProjectiles());
+		StartCoroutine(ShootProjectiles());
 		currentState = enemyState.idle;
 
-      playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
+		playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
     }
 
 	public void Initialise(int scale,int projSize)
@@ -140,8 +147,7 @@ public class Enemy : MonoBehaviour, DamageInterface
 				newSpeed = speed - Mathf.CeilToInt(-currentHealth / speed);
 			else
 				newSpeed = 0;
-			GameManager.Instance.EnemyManager.RemoveEnemy();
-			Destroy(gameObject);
+			Death();
 			return;
         }
 		else
@@ -149,4 +155,25 @@ public class Enemy : MonoBehaviour, DamageInterface
 			newSpeed = 0;
 		}
     }
+
+	public void Death()
+	{
+		GameManager.Instance.EnemyManager.RemoveEnemy();
+		MeatSpawn();
+		Destroy(gameObject);
+	}
+
+	private void MeatSpawn()
+	{
+		Vector3 offset = Vector3.zero;
+
+		// currentHealth = meat dropped
+		for (int i = 0; i < currentHealth; i++)
+		{
+			Meat spawned = Instantiate(meatPrefab, transform.position + offset, Quaternion.identity);
+			spawned.Initialize();
+			offset += Vector3.right;
+		}
+
+	}
 }

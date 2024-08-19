@@ -10,12 +10,17 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float enemySpawnDelayMin;
     [SerializeField] private float enemySpawnDelayMax;
     [SerializeField] private int maxEnemy;
-    [SerializeField, Range(5,150)] private int minEnemySpawnRange;
-    [SerializeField, Range(5,150)] private int maxEnemySpawnRange;
+    [SerializeField, Range(5,50)] private int minEnemySpawnRange;
+    [SerializeField, Range(5,50)] private int maxEnemySpawnRange;
     [SerializeField, ReadOnly]
     private int currentEnemies;
     [SerializeField]
     private Enemy EnemyPrefab;
+    [SerializeField] 
+    private int playerScale;
+    [SerializeField]
+    private int projectileScale;
+
 
     private Timer spawnTimer;
     void Start()
@@ -33,7 +38,7 @@ public class EnemyManager : MonoBehaviour
             randPos.x *= (UnityEngine.Random.Range(0, 2) < 1) ? 1 : -1;
             randPos.y *= (UnityEngine.Random.Range(0, 2) < 1) ? 1 : -1;
             Enemy temp = GameObject.Instantiate(EnemyPrefab, (Vector3)randPos,quaternion.identity);
-            temp.Initialise(UnityEngine.Random.Range(1,6),UnityEngine.Random.Range(1,4));
+            temp.Initialise(playerScale, projectileScale);
             currentEnemies++;
             ResetTime();
         }

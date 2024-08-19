@@ -114,6 +114,7 @@ MonoBehaviour:
   StartingHealth: 0
   CurrentHealth: 0
   CurrentScale: 0
+  TotalMeat: 0
 --- !u!114 &4708750169033218675
 MonoBehaviour:
   m_ObjectHideFlags: 0

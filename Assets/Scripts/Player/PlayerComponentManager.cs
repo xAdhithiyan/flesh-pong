@@ -16,6 +16,11 @@ public class PlayerComponentManager : MonoBehaviour
     [field: SerializeField]
     public PlayerAnimation anims{ get; private set; }
 
+    public void Awake()
+    {
+        if(GameManager.Instance.PCM == null)
+            GameManager.Instance.PCM = this;
+    }
 
     public void SetValues()
     {

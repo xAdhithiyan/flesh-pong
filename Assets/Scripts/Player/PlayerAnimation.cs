@@ -25,5 +25,11 @@ public class PlayerAnimation : MonoBehaviour, PCMInterface
             anim.SetFloat("moveX", PCM.controller.lastDirection.x);
             anim.SetFloat("moveY", PCM.controller.lastDirection.y);
         }
+        else if (PCM.controller.CurrentState == playerState.idle)
+        {
+            anim.Play("Idle");
+            anim.SetFloat("moveX", PCM.controller.lastDirection.x);
+            anim.SetFloat("moveY", PCM.controller.lastDirection.y);
+        }
     }
 }

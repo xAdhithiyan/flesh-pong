@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour, PCMInterface
     public Rigidbody2D rb { get; private set; }
     [SerializeField]
     private CapsuleCollider2D col2D;
-    [SerializeField]
-    private CircleCollider2D circCol2D;
+    /*[SerializeField]
+    private CircleCollider2D circCol2D;*/
     [field: SerializeField]
     public PlayerComponentManager PCM { get; set; }
 
@@ -110,18 +110,17 @@ public class PlayerController : MonoBehaviour, PCMInterface
     public void Start()
     {
         timers = GameManager.Instance.TimerManager.GenerateTimers(typeof(coolDownTimers), gameObject);
-        timers.times[(int)coolDownTimers.dashCD].OnTimeIsZero += DashResetter;
+        //timers.times[(int)coolDownTimers.dashCD].OnTimeIsZero += DashResetter;
         currentMaxSpeed = maxSpeed;
         currentDashCharges = dashCharges;
         drag = rb.drag;
-        initialLayer = circCol2D.excludeLayers;
     }
     #region Updates
     // Update is called once per frame
     void Update()
     {
         StateDecider();
-        ExecuteInput();
+        //ExecuteInput();
         UpdateMousePos();
         AimPoint();
     }
@@ -187,7 +186,7 @@ public class PlayerController : MonoBehaviour, PCMInterface
         switch ((int)bufferedState)
         {
             case (int)playerState.dashing:               
-                Dash();
+                //Dash();
                 break;
 
         }
@@ -238,7 +237,7 @@ public class PlayerController : MonoBehaviour, PCMInterface
         }
     }
     #endregion
-
+/*
     #region Dash
     private void Dash()
     {        
@@ -319,7 +318,7 @@ public class PlayerController : MonoBehaviour, PCMInterface
         StopDash();
     }
     #endregion
-
+*/
     #region Setter
     #endregion
     #region Utility

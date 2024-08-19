@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 using System.Xml.Schema;
 using System.Runtime.CompilerServices;
 using System.IO.IsolatedStorage;
+using System;
 
 public class Enemy : MonoBehaviour, DamageInterface
 {
@@ -40,6 +41,8 @@ public class Enemy : MonoBehaviour, DamageInterface
 	private int ProjectileSize = 1;
 	[SerializeField, ReadOnly]
 	private int currentHealth = 5;
+	[SerializeField,ReadOnly]
+	private int meatToDrop;
 
 	[Header("Health")]
 	[SerializeField]
@@ -49,26 +52,38 @@ public class Enemy : MonoBehaviour, DamageInterface
 
 	private bool inCameraForAttack = false;
 
+	private Timer attackTimer;
+
 	private enum enemyState
 	{
 		idle,
 		moving,
+		attacked,
+		dying
 	}
 	private enemyState currentState;
 
 	private void Start()
 	{
-		StartCoroutine(ShootProjectiles());
+		attackTimer = GameManager.Instance.TimerManager.GenerateTimers(gameObject);
+		attackTimer.SetTime(waitForNextAttack);
 		currentState = enemyState.idle;
 
 		playerPositon = GameObject.FindWithTag(Tags.T_Player).transform;
-    }
 
-	public void Initialise(int scale,int projSize)
+		if (currentHealth == 0)
+			currentHealth = Scale * 5;
+
+        if (meatToDrop == 0)
+			meatToDrop = currentHealth;
+	}
+
+	public void Initialise(int scale, int projSize)
 	{
 		Scale = scale;
 		ProjectileSize = projSize;
 		currentHealth = scale * 5;
+		meatToDrop = currentHealth;
 	}
 
 	private void Update()
@@ -76,12 +91,13 @@ public class Enemy : MonoBehaviour, DamageInterface
 		checkIfInCamera();
 		checkCamera();
 		movement();
-	}
+		ShootProjectile();
+        Animate();
+    }
 
 	private void movement()
 	{
 		towardsPlayer = (playerPositon.position - transform.position).normalized;
-
 		if (currentState == enemyState.moving)
 		{
 			rb.velocity = towardsPlayer * moveSpeed;
@@ -93,8 +109,10 @@ public class Enemy : MonoBehaviour, DamageInterface
 	}
 	private void checkCamera()
 	{
+		if (currentState == enemyState.dying)
+			return;
 		Collider2D player = Physics2D.OverlapCircle(transform.position, checkRadius, playerLayerMask);
-		if(player != null)
+		if (player != null)
 		{
 			currentState = enemyState.idle;
 		}
@@ -107,7 +125,7 @@ public class Enemy : MonoBehaviour, DamageInterface
 	{
 		Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
 		Bounds bound = new Bounds(transform.position, Vector3.zero);
-		if(GeometryUtility.TestPlanesAABB(planes, bound))
+		if (GeometryUtility.TestPlanesAABB(planes, bound))
 		{
 			inCameraForAttack = true;
 		}
@@ -116,21 +134,18 @@ public class Enemy : MonoBehaviour, DamageInterface
 			inCameraForAttack = false;
 		}
 	}
-
-	private IEnumerator ShootProjectiles() { 
-		while(true) {
-			ShootProjectile();
-			yield return new WaitForSeconds(waitForNextAttack);
-		}
-	}
-
+	private bool attacked = false;
 	private void ShootProjectile()
 	{
-		if (inCameraForAttack)
+		if (!attackTimer.IsTimeZero())
+			return;
+		if (inCameraForAttack && currentState == enemyState.idle)
 		{
 			Projectile spawned = Instantiate(_enemyAttackPrefab, transform.position + towardsPlayer, Quaternion.identity);
-			spawned.Initialise(towardsPlayer, towardsPlayer, ((Scale-1)*5) + ProjectileSize);
-		}
+			spawned.Initialise(towardsPlayer, towardsPlayer, ((Scale - 1) * 5) + ProjectileSize);
+			attacked = true;
+            attackTimer.SetTime(waitForNextAttack);
+        }
 	}
 
 	private void OnDrawGizmosSelected()
@@ -138,8 +153,8 @@ public class Enemy : MonoBehaviour, DamageInterface
 		Gizmos.DrawWireSphere(transform.position, checkRadius);
 	}
 
-    public void TakeDamage(int damage, int speed, out int newSpeed)
-    {
+	public void TakeDamage(int damage, int speed, out int newSpeed)
+	{
 		currentHealth -= damage;
 		if (currentHealth <= 0)
 		{
@@ -149,31 +164,70 @@ public class Enemy : MonoBehaviour, DamageInterface
 				newSpeed = 0;
 			Death();
 			return;
-        }
+		}
 		else
 		{
 			newSpeed = 0;
 		}
-    }
+	}
 
 	public void Death()
 	{
 		GameManager.Instance.EnemyManager.RemoveEnemy();
 		MeatSpawn();
-		Destroy(gameObject);
+		currentState = enemyState.dying;
+		Invoke("DestroySelf", 0.1f);
 	}
 
-	private void MeatSpawn()
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
+
+    private void MeatSpawn()
 	{
 		Vector3 offset = Vector3.zero;
 
 		// currentHealth = meat dropped
-		for (int i = 0; i < currentHealth; i++)
+		for (int i = 0; i < meatToDrop; i++)
 		{
 			Meat spawned = Instantiate(meatPrefab, transform.position + offset, Quaternion.identity);
 			spawned.Initialize();
 			offset += Vector3.right;
 		}
-
+		Debug.Log("ran");
 	}
+
+	#region Anim
+	[SerializeField]
+	private Animator anim;
+
+    public static int GetDirection(Vector2 originVector, Vector2 dirVector, bool fourMode = true)
+    {
+        float signedAngle = Vector2.SignedAngle(originVector, dirVector);
+        float angle = signedAngle > 0 ? signedAngle : 360f + signedAngle;
+        return Mathf.RoundToInt((Mathf.Floor(angle / (fourMode ? 90f : 45f)) + (angle / (fourMode ? 90f : 45f) % 1 > 0.5 ? 1 : 0)) % (fourMode ? 4 : 8));
+    }
+
+	private void Animate()
+	{
+		anim.SetFloat("Dir", GetDirection(Vector2.right, (Vector2)towardsPlayer));
+
+
+        if (currentState == enemyState.dying)
+        {
+            anim.Play("Dying");
+        }
+        else if (attacked)
+		{
+			anim.Play("Attacked");
+			if (attackTimer.GetTime() < waitForNextAttack * 0.4f)
+				attacked = false;
+		}
+		else
+		{
+			anim.Play("Moving");
+		}
+	}
+    #endregion
 }

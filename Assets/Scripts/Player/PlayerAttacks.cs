@@ -71,9 +71,16 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
         anim.Play("hammer");
         if(Attacks.Count > 0)
         {
-            foreach (Projectile attack in Attacks)
+            for(int i = 0; i < Attacks.Count; i++)
             {
-                attack.Redirect(attack.transform.position - transform.position,((int)chargeState + 1)*PCM.values.GetCurrentScale());
+                if (i == 0)
+                {
+                    Attacks[i].Redirect(PCM.controller.mousePos - (Vector2)transform.position, ((int)chargeState + 1) * PCM.values.GetCurrentScale());
+                }
+                else
+                {
+                    Attacks[i].Redirect(Attacks[i].transform.position - transform.position, ((int)chargeState + 1) * PCM.values.GetCurrentScale());
+                }
             }
         }
         chargeTime.ResetSpecificToZero();
@@ -91,7 +98,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
         {
             chargeTime.SetTime(chargeRate[(int)chargeState]);
             chargeState++;
-            hammerScale.localScale = Vector3.one * (((int)chargeState * 0.25f) + 1);
+            hammerScale.localScale = Vector3.one * (((int)chargeState * 0.4f) + 1);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

@@ -72,7 +72,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <rb>k__BackingField: {fileID: 7756301845418012394}
   col2D: {fileID: 7944411596330529748}
-  circCol2D: {fileID: 7292838251787901537}
   <PCM>k__BackingField: {fileID: 1395768840765028413}
   acceleration: 5
   maxSpeed: 10
@@ -111,10 +110,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PCM>k__BackingField: {fileID: 1395768840765028413}
-  StartingHealth: 0
+  StartingMeat: 10
   CurrentHealth: 0
-  CurrentScale: 0
+  CurrentScale: 1
   TotalMeat: 0
+  MeatPerSize: 
 --- !u!114 &4708750169033218675
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,28 +24,27 @@ public class Meat : MonoBehaviour
 	}
 	public void Initialize()
 	{
-		meatDecayTimer.SetTime(UnityEngine.Random.Range(1, maxMeatLifeTime));
+		//meatDecayTimer.SetTime(UnityEngine.Random.Range(1, maxMeatLifeTime));
 		animator.SetTrigger("fall");
 	}
 	private void Update()
 	{
-		if(meatDecayTimer.IsTimeZero())
+		/*if(meatDecayTimer.IsTimeZero())
 		{
 			Destroy(gameObject);
-		}
+		}*/
 	}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (hasCollided) return;
 
-	private void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (hasCollided) return;
+        if ((1 << collision.gameObject.layer) == playerLayerMask)
+        {
+            hasCollided = true;
 
-		if ((1 << collision.gameObject.layer) == playerLayerMask)
-		{
-			hasCollided = true;
-
-			// increase meat value
-			GameObject.FindWithTag(Tags.T_Player).GetComponent<PlayerValues>().IncreaseMeat();
-			Destroy(gameObject);
-		}
-	}
+            // increase meat value
+            GameManager.Instance.PCM.values.IncreaseMeat();
+            Destroy(gameObject);
+        }
+    }
 }

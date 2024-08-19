@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using KevinCastejon.MoreAttributes;
+using UnityEngine.UIElements;
 
 public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
 {
@@ -10,19 +11,20 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     [field: SerializeField]
     public PlayerComponentManager PCM {  get; set; }
     [field: SerializeField]
-    public int StartingHealth;
+    public int StartingMeat;
     [SerializeField, ReadOnly]
     private int CurrentHealth;
     [SerializeField]
     private int CurrentScale;
     [SerializeField]
     private int TotalMeat;
+    [SerializeField]
+    private List<int> MeatPerSize = new List<int>();
 
     void Start()
     {
-        CurrentHealth = StartingHealth;
+        CurrentHealth = StartingMeat;
         CurrentScale = 1;
-        TotalMeat = 0;
     }
 
     public int GetCurrentScale()
@@ -49,18 +51,29 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     public void TakeDamage(int damage, int speed, out int newSpeed)
     {
         CurrentHealth -= damage;
+        IncreaseScale();
         if (CurrentHealth < 0)
         {
-            newSpeed = speed - Mathf.FloorToInt(-CurrentHealth / speed);
         }
-        else
+        newSpeed = 0;
+    }
+
+    private void IncreaseScale()
+    {
+        for(int i = 0; i < MeatPerSize.Count; i++)
         {
-            newSpeed = 0;
+            if (CurrentHealth <= MeatPerSize[i])
+            {
+                transform.localScale = Vector3.one * (i + 1);
+                CurrentScale = i + 1;
+                return;
+            }
         }
     }
 
     public void IncreaseMeat()
     {
-        TotalMeat++;
+        CurrentHealth++;
+        IncreaseScale();
     }
 }

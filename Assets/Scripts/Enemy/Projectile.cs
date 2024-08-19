@@ -32,6 +32,8 @@ public class Projectile : MonoBehaviour
 	[SerializeField]
 	private LayerMask IgnoreLayer;
 
+	private Vector2 lastDir;
+
 	private Timer lifeTime;
     private void Start()
 	{
@@ -42,10 +44,12 @@ public class Projectile : MonoBehaviour
     {
         rb.excludeLayers += IgnoreLayer;
         rb.velocity = dir.normalized * projectileSpeed;
+		lastDir = dir;
 		transform.right = Rtransform;
 		projectileSize = Scale;
 		projectileDamage = Scale;
         transform.localScale *= projectileSize;
+		transform.localEulerAngles = GetEularAngleToDir(Vector2.down, dir);
     }
 	private void Update()
 	{
@@ -74,26 +78,32 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
 	{
+		
 		int newSpeed;
 		if (collision.gameObject.TryGetComponent(out DamageInterface hitTarget))
 		{
             lifeTime.SetTime(projectileLifetime);
             hitTarget.TakeDamage(projectileDamage, currentProjSpeed, out newSpeed);
-
-            if (newSpeed > 0)
+			Debug.Log(newSpeed);
+            if (newSpeed > 1)
             {
                 projectileDamage = newSpeed * projectileSize;
                 currentProjSpeed = newSpeed;
-                rb.velocity = rb.velocity.normalized * newSpeed * projectileSpeed;
-                return;
+                rb.velocity = lastDir.normalized * newSpeed * projectileSpeed;
+				return;
             }
 			else
 			{
                 startReducingSpeed = true;
+				currentProjSpeed = 1;
             }
+            Debug.Log(rb.velocity.magnitude + " " + newSpeed);
         }
-        rb.velocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal) * ReflectValue;
-    }
+        rb.velocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal).normalized * currentProjSpeed * projectileSpeed;
+		lastDir = rb.velocity;
+        transform.localEulerAngles = GetEularAngleToDir(Vector2.down, lastDir);
+		
+	}
 
     public void Redirect(Vector2 newDir, int Strength)
 	{
@@ -104,5 +114,12 @@ public class Projectile : MonoBehaviour
 		rb.velocity = newDir.normalized * projectileSpeed * currentProjSpeed;
 		lifeTime.SetTime(projectileLifetime);
 		rb.excludeLayers -= IgnoreLayer;
-	}
+		lastDir = rb.velocity;
+        transform.localEulerAngles = GetEularAngleToDir(Vector2.down, newDir);
+    }
+
+    public static Vector3 GetEularAngleToDir(Vector2 originVector, Vector2 dirVector)
+    {
+        return new Vector3(0, 0, Vector2.SignedAngle(originVector, dirVector));
+    }
 }

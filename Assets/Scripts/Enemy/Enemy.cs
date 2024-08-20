@@ -81,6 +81,7 @@ public class Enemy : MonoBehaviour, DamageInterface
 	public void Initialise(int scale, int projSize)
 	{
 		Scale = scale;
+		transform.localScale = Vector3.one * ((scale - 1) * 0.5f + 1);
 		ProjectileSize = projSize;
 		currentHealth = scale * 5;
 		meatToDrop = currentHealth;

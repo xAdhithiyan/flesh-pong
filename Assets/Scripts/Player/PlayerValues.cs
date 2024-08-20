@@ -17,8 +17,6 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     [SerializeField]
     private int CurrentScale;
     [SerializeField]
-    private int TotalMeat;
-    [SerializeField]
     private List<int> MeatPerSize = new List<int>();
 
     void Start()
@@ -60,13 +58,13 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
 
     private void IncreaseScale()
     {
-        for(int i = 0; i < MeatPerSize.Count; i++)
+        for(int i = MeatPerSize.Count; i > 0; i--)
         {
-            if (CurrentHealth <= MeatPerSize[i])
+            if (CurrentHealth >= MeatPerSize[i-1])
             {
-                transform.localScale = Vector3.one * (i + 1);
-                CurrentScale = i + 1;
-                return;
+                transform.localScale = Vector3.one * ((i - 1) * 0.5f + 1);
+                CurrentScale = i;
+                return; 
             }
         }
     }

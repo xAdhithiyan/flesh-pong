@@ -450,19 +450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2518816130591929688, guid: 95f0d784d2c11314e9c1c81ef4fb4805, type: 3}
       propertyPath: maxEnemy
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2518816130591929688, guid: 95f0d784d2c11314e9c1c81ef4fb4805, type: 3}
-      propertyPath: enemySpawnDelayMax
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2518816130591929688, guid: 95f0d784d2c11314e9c1c81ef4fb4805, type: 3}
-      propertyPath: enemySpawnDelayMin
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2518816130591929688, guid: 95f0d784d2c11314e9c1c81ef4fb4805, type: 3}
-      propertyPath: maxEnemySpawnRange
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4646020278903404955, guid: 95f0d784d2c11314e9c1c81ef4fb4805, type: 3}
       propertyPath: m_Name
@@ -473,11 +461,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f0d784d2c11314e9c1c81ef4fb4805, type: 3}
---- !u!95 &857265948 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2281861244249238768, guid: 1727ce831d2f61a4680f3d681aafce79, type: 3}
-  m_PrefabInstance: {fileID: 2045875572}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1142072176
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,10 +576,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3249774487179842288, guid: 1727ce831d2f61a4680f3d681aafce79, type: 3}
-      propertyPath: anim
-      value: 
-      objectReference: {fileID: 857265948}
-    - target: {fileID: 3249774487179842288, guid: 1727ce831d2f61a4680f3d681aafce79, type: 3}
       propertyPath: Scale
       value: 1
       objectReference: {fileID: 0}
@@ -606,7 +585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3249774487179842288, guid: 1727ce831d2f61a4680f3d681aafce79, type: 3}
       propertyPath: ProjectileSize
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3249774487179842288, guid: 1727ce831d2f61a4680f3d681aafce79, type: 3}
       propertyPath: waitForNextAttack

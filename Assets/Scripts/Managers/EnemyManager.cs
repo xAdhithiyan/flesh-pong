@@ -37,7 +37,7 @@ public class EnemyManager : MonoBehaviour
             Vector2 randPos = new Vector2(UnityEngine.Random.Range(minEnemySpawnRange, maxEnemySpawnRange), UnityEngine.Random.Range(minEnemySpawnRange, maxEnemySpawnRange));
             randPos.x *= (UnityEngine.Random.Range(0, 2) < 1) ? 1 : -1;
             randPos.y *= (UnityEngine.Random.Range(0, 2) < 1) ? 1 : -1;
-            Enemy temp = GameObject.Instantiate(EnemyPrefab, (Vector3)randPos,quaternion.identity);
+            Enemy temp = Instantiate(EnemyPrefab, (Vector3)randPos,quaternion.identity);
             temp.Initialise(playerScale, projectileScale);
             currentEnemies++;
             ResetTime();

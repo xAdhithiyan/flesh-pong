@@ -223,9 +223,8 @@ MonoBehaviour:
   StartingMeat: 10
   CurrentHealth: 0
   CurrentScale: 1
-  TotalMeat: 0
-  MeatPerSize: 
---- !u!114 &7793603804192055524
+  MeatPerSize: 0a0000001400000028000000460000006e000000
+--- !u!114 &4708750169033218675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

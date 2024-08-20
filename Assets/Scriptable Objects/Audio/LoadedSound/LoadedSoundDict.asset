@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a6a58aaa0d9a942ad0559183b47e90, type: 3}
+  m_Name: LoadedSoundDict
+  m_EditorClassIdentifier: 
+  loadedSound:
+    _serializedList:
+    - Key: Deflect
+      Value: {fileID: 11400000, guid: 637251faa40b6ac46adc025183b46c0f, type: 2}
+    - Key: EDeath
+      Value: {fileID: 11400000, guid: 3c11639b593a41749a7dd25fcbe6b891, type: 2}
+    - Key: Hit
+      Value: {fileID: 11400000, guid: 28f96910ead2bf745866988f5e3a16ca, type: 2}
+    - Key: Music
+      Value: {fileID: 11400000, guid: 7d606e139cbc1d340a72b49ff8461805, type: 2}
+    - Key: PDeath
+      Value: {fileID: 11400000, guid: ee06044c7d3c69145b35767cab1b981a, type: 2}

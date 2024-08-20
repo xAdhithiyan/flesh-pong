@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1040817279608945702}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.8, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d2bc92bf2539b4eab96efe6003d5b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySpawnDelayMin: 3
-  enemySpawnDelayMax: 6
+  enemySpawnDelayMin: 2
+  enemySpawnDelayMax: 4
   maxEnemy: 10
-  minEnemySpawnRange: 20
-  maxEnemySpawnRange: 50
+  minEnemySpawnRange: 7
+  maxEnemySpawnRange: 30
   currentEnemies: 0
   EnemyPrefab: {fileID: 3249774487179842288, guid: 1727ce831d2f61a4680f3d681aafce79, type: 3}
   playerScale: 1
@@ -101,7 +101,17 @@ MonoBehaviour:
   sfxVolume: 100
   bgmVolume: 100
   LoadedAudioClips:
-    _serializedList: []
+    _serializedList:
+    - Key: Deflect
+      Value: {fileID: 11400000, guid: 637251faa40b6ac46adc025183b46c0f, type: 2}
+    - Key: EDeath
+      Value: {fileID: 11400000, guid: 3c11639b593a41749a7dd25fcbe6b891, type: 2}
+    - Key: Hit
+      Value: {fileID: 11400000, guid: 28f96910ead2bf745866988f5e3a16ca, type: 2}
+    - Key: Music
+      Value: {fileID: 11400000, guid: 7d606e139cbc1d340a72b49ff8461805, type: 2}
+    - Key: PDeath
+      Value: {fileID: 11400000, guid: ee06044c7d3c69145b35767cab1b981a, type: 2}
   SFXMixerGroup: {fileID: -3833594322038420439, guid: 8ef6d8b737ad1934aa2b7fdd12d63b52, type: 2}
   BGMMixerGroup: {fileID: 2784030454044810183, guid: 8ef6d8b737ad1934aa2b7fdd12d63b52, type: 2}
   MasterMixerGroup: {fileID: 24300002, guid: 8ef6d8b737ad1934aa2b7fdd12d63b52, type: 2}

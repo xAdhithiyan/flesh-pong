@@ -18,8 +18,7 @@ public class PlayerComponentManager : MonoBehaviour
 
     public void Awake()
     {
-        if(GameManager.Instance.PCM == null)
-            GameManager.Instance.PCM = this;
+       GameManager.Instance.PCM = this;
     }
 
     public void SetValues()
@@ -41,8 +40,9 @@ public class PlayerComponentManager : MonoBehaviour
             intf.PCM = this;
         }
     }
-    [UnityEditor.Callbacks.DidReloadScripts]
-    private static void OnScriptsReloaded()
+    #if UNITY_EDITOR
+    //[UnityEditor.Callbacks.DidReloadScripts]
+    /*private static void OnScriptsReloaded()
     {
         UpdateScripts();
     }
@@ -56,5 +56,6 @@ public class PlayerComponentManager : MonoBehaviour
 
         PrefabUtility.SaveAsPrefabAsset(contentsRoot, assetPath);
         PrefabUtility.UnloadPrefabContents(contentsRoot);
-    }
+    }*/
+    #endif
 }

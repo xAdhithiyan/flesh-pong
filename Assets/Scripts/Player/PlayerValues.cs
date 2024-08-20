@@ -28,11 +28,17 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     [SerializeField]
     private int healthToAdd;
 
+    public GameObject GameOverUI;
+
+    public TMP_Text text;
+
     void Start()
     {
         block = new MaterialPropertyBlock();
         CurrentHealth = StartingMeat;
         CurrentScale = 1;
+
+        text.text = CurrentHealth.ToString();
     }
 
     public int GetCurrentScale()
@@ -46,10 +52,7 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
         //UpdateCamForward();
         if(healthToAdd != 0)
         {
-            for(int i = 0; i < healthToAdd; i++)
-            {
-                IncreaseMeat();
-            }
+            TakeDamage(healthToAdd, 0, out int b);
             healthToAdd = 0;
         }
     }
@@ -59,12 +62,15 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     public void TakeDamage(int damage, int speed, out int newSpeed)
     {
         CurrentHealth -= damage;
+        text.text = CurrentHealth.ToString();
         IncreaseScale();
         StartCoroutine(DamageFlash());
         if (CurrentHealth < 0)
         {
             GameManager.Instance.DisablePlayer();
+            GameOverUI.SetActive(true);
             isDead = true;
+            GameManager.Instance.AudioManager.PlaySound(AudioRef.PDeath);
         }
         newSpeed = 0;
     }
@@ -118,6 +124,7 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     public void IncreaseMeat()
     {
         CurrentHealth++;
+        text.text = CurrentHealth.ToString();
         IncreaseScale();
     }
 }

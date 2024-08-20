@@ -33,6 +33,10 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.scene == BuildScene.menu)
+            return;
+        if (GameManager.Instance.PCM && GameManager.Instance.PCM.values.isDead)
+            return;
         if (spawnTimer.IsTimeZero() && currentEnemies < maxEnemy)
         {
             Vector2 randPos = new Vector2(Random.Range(minEnemySpawnRange, maxEnemySpawnRange), UnityEngine.Random.Range(minEnemySpawnRange, maxEnemySpawnRange));

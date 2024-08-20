@@ -89,6 +89,7 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
         anim.Play("hammer");
         if(Attacks.Count > 0)
         {
+            GameManager.Instance.AudioManager.PlaySound(AudioRef.Deflect);
             for(int i = 0; i < Attacks.Count; i++)
             {
                 if (i == 0)
@@ -101,6 +102,8 @@ public class PlayerAttacks : MonoBehaviour, PCMInterface
                 }
             }
         }
+
+        GameManager.Instance.AudioManager.PlaySound(AudioRef.Hit);
         chargeTime.ResetSpecificToZero();
         chargeTime.SetTime(attackLag, 1);
         chargeState = ChargeState.fast;

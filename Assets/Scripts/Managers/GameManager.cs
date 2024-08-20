@@ -5,7 +5,13 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
+public enum BuildScene
+{
+    game,menu
+}
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -15,6 +21,8 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public EnemyManager EnemyManager { get; private set; }
     [field: SerializeField] public PlayerComponentManager PCM { get; set; }
     public PlayerInputMap playerInputMap { get; private set; }
+
+    public BuildScene scene { get; private set; }
 
     public CameraManager cameraManager { get; set; }
     private void Awake()
@@ -30,6 +38,7 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         playerInputMap = new PlayerInputMap();
+        scene = BuildScene.menu;
     }
 
     public void EnablePlayer()
@@ -43,7 +52,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        AudioManager.PlaySound(AudioRef.Music, true);
     }
 
     // Update is called once per frame
@@ -51,7 +60,7 @@ public class GameManager : MonoBehaviour
     {
         
     }
-
+#if UNITY_EDITOR
     public static void UpdateScripts()
     {
         string assetPath = "Assets/Prefabs/GameManager.prefab";
@@ -63,11 +72,32 @@ public class GameManager : MonoBehaviour
         PrefabUtility.SaveAsPrefabAsset(contentsRoot, assetPath);
         PrefabUtility.UnloadPrefabContents(contentsRoot);
     }
-
+#endif
     public void SetValues()
     {
         AudioManager = GetComponentInChildren<AudioManager>();
         TimerManager = GetComponentInChildren<TimerManager>();
         EnemyManager = GetComponentInChildren<EnemyManager>();
+    }
+
+    public void LoadGame()
+    {
+        SceneManager.LoadScene(1);
+        scene = BuildScene.game;
+    }
+
+    public void LoadStart()
+    {
+        SceneManager.LoadScene(0);
+        scene = BuildScene.menu;
+    }
+    public void ModiyBGM(float Value)
+    {
+        AudioManager.ModifyBGMVolume(Value);
+    }
+
+    public void ModiySFX(float Value)
+    {
+        AudioManager.ModifySFXVolume(Value);
     }
 }

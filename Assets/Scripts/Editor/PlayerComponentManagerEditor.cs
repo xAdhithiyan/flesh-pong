@@ -12,7 +12,7 @@ public class PlayerComponentManagerEditor : Editor
         base.OnInspectorGUI();
         if (GUILayout.Button("Load PCM"))
         {
-            PlayerComponentManager.UpdateScripts();
+            //PlayerComponentManager.UpdateScripts();
         }
     }
 }

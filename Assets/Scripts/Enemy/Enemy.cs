@@ -178,6 +178,7 @@ public class Enemy : MonoBehaviour, DamageInterface
 
 	public void Death()
 	{
+		GameManager.Instance.AudioManager.PlaySound(AudioRef.EDeath);
 		GameManager.Instance.EnemyManager.RemoveEnemy();
 		MeatSpawn();
 		currentState = enemyState.dying;

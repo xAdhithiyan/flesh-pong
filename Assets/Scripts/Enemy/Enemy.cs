@@ -7,6 +7,8 @@ using System.Xml.Schema;
 using System.Runtime.CompilerServices;
 using System.IO.IsolatedStorage;
 using System;
+using Random = UnityEngine.Random;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour, DamageInterface
 {
@@ -81,7 +83,9 @@ public class Enemy : MonoBehaviour, DamageInterface
 	public void Initialise(int scale, int projSize)
 	{
 		Scale = scale;
-		transform.localScale = Vector3.one * ((scale - 1) * 0.5f + 1);
+		moveSpeed = moveSpeed * ((scale - 1) * 0.5f + 1);
+
+        transform.localScale = Vector3.one * ((scale - 1) * 0.5f + 1);
 		ProjectileSize = projSize;
 		currentHealth = scale * 5;
 		meatToDrop = currentHealth;
@@ -112,7 +116,7 @@ public class Enemy : MonoBehaviour, DamageInterface
 	{
 		if (currentState == enemyState.dying)
 			return;
-		Collider2D player = Physics2D.OverlapCircle(transform.position, checkRadius, playerLayerMask);
+		Collider2D player = Physics2D.OverlapCircle(transform.position, checkRadius * Scale, playerLayerMask);
 		if (player != null)
 		{
 			currentState = enemyState.idle;
@@ -143,7 +147,7 @@ public class Enemy : MonoBehaviour, DamageInterface
 		if (inCameraForAttack && currentState == enemyState.idle)
 		{
 			Projectile spawned = Instantiate(_enemyAttackPrefab, transform.position + towardsPlayer, Quaternion.identity);
-			spawned.Initialise(towardsPlayer, towardsPlayer, ((Scale - 1) * 5) + ProjectileSize);
+			spawned.Initialise(towardsPlayer, towardsPlayer, Scale * ProjectileSize);
 			attacked = true;
             attackTimer.SetTime(waitForNextAttack);
         }
@@ -151,7 +155,7 @@ public class Enemy : MonoBehaviour, DamageInterface
 
 	private void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawWireSphere(transform.position, checkRadius);
+		Gizmos.DrawWireSphere(transform.position, checkRadius * Scale);
 	}
 
 	public void TakeDamage(int damage, int speed, out int newSpeed)
@@ -187,16 +191,17 @@ public class Enemy : MonoBehaviour, DamageInterface
 
     private void MeatSpawn()
 	{
-		Vector3 offset = Vector3.zero;
 
 		// currentHealth = meat dropped
 		for (int i = 0; i < meatToDrop; i++)
-		{
-			Meat spawned = Instantiate(meatPrefab, transform.position + offset, Quaternion.identity);
-			spawned.Initialize();
-			offset += Vector3.right;
+        {
+			Vector2 endPos = new Vector2(Random.Range(0f, 3f * ((Scale - 1) * 3f + 1)), Random.Range(0f, 1.5f * ((Scale - 1) * 0.5f + 1)));
+			endPos.x -= 1.5f *((Scale - 1) * 0.5f + 1);
+			endPos.y -= 1.5f * ((Scale - 1) * 0.5f + 1);
+
+            Meat spawned = Instantiate(meatPrefab, transform.position, Quaternion.identity);
+			spawned.Initialize(endPos);
 		}
-		Debug.Log("ran");
 	}
 
 	#region Anim

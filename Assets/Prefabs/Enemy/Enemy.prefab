@@ -218,15 +218,16 @@ MonoBehaviour:
   playerPositon: {fileID: 0}
   rb: {fileID: 6932232010594822246}
   moveSpeed: 5
-  checkRadius: 4
+  checkRadius: 8
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 128
   _enemyAttackPrefab: {fileID: 4833005682563364381, guid: 551b5c98c669e4d45a5b5a2bf41387c5, type: 3}
   meatPrefab: {fileID: -5236912994232329558, guid: 883beaab65324264d89e5dc5304dedad, type: 3}
-  waitForNextAttack: 1
+  waitForNextAttack: 3
   Scale: 1
-  ProjectileSize: 2
+  ProjectileSize: 1
   currentHealth: 0
+  meatToDrop: 0
   towardsPlayer: {x: 0, y: 0, z: 0}
   anim: {fileID: 2281861244249238768}

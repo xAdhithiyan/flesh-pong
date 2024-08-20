@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public EnemyManager EnemyManager { get; private set; }
     [field: SerializeField] public PlayerComponentManager PCM { get; set; }
     public PlayerInputMap playerInputMap { get; private set; }
+
+    public CameraManager cameraManager { get; set; }
     private void Awake()
     {
         if (Instance != null)

@@ -15,11 +15,20 @@ public class PlayerAnimation : MonoBehaviour, PCMInterface
     {
         
     }
-
+    private bool deathPlayed = false;
     // Update is called once per frame
     void Update()
     {
-        if (PCM.controller.CurrentState == playerState.moving)
+        if (deathPlayed)
+        {
+            return;
+        }
+        if (PCM.values.isDead && !deathPlayed)
+        {
+            deathPlayed = true;
+            anim.Play("Dying");
+        }
+        else if (PCM.controller.CurrentState == playerState.moving)
         {
             anim.Play("Moving");
             anim.SetFloat("moveX", PCM.controller.lastDirection.x);

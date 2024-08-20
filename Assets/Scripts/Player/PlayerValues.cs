@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using KevinCastejon.MoreAttributes;
 using UnityEngine.UIElements;
+using DG.Tweening;
 
 public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
 {
@@ -18,9 +19,18 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     private int CurrentScale;
     [SerializeField]
     private List<int> MeatPerSize = new List<int>();
+    [Header("Shaders")]
+    [SerializeField]
+    private float flashDuration;
+    [SerializeField]
+    private SpriteRenderer rend;
+    private MaterialPropertyBlock block;
+    [SerializeField]
+    private int healthToAdd;
 
     void Start()
     {
+        block = new MaterialPropertyBlock();
         CurrentHealth = StartingMeat;
         CurrentScale = 1;
     }
@@ -34,39 +44,75 @@ public class PlayerValues : MonoBehaviour, PCMInterface, DamageInterface
     void Update()
     {
         //UpdateCamForward();
-    }
-
-    public void UpdateHealth(int damageToTake)
-    {
-        CurrentHealth -= damageToTake;
-        if (CurrentHealth < 0)
+        if(healthToAdd != 0)
         {
-            CurrentHealth = 0;
-            //death stuff
+            for(int i = 0; i < healthToAdd; i++)
+            {
+                IncreaseMeat();
+            }
+            healthToAdd = 0;
         }
     }
 
+    
+    public bool isDead = false;
     public void TakeDamage(int damage, int speed, out int newSpeed)
     {
         CurrentHealth -= damage;
         IncreaseScale();
+        StartCoroutine(DamageFlash());
         if (CurrentHealth < 0)
         {
+            GameManager.Instance.DisablePlayer();
+            isDead = true;
         }
         newSpeed = 0;
     }
 
     private void IncreaseScale()
     {
+        Debug.Log("running");
         for(int i = MeatPerSize.Count; i > 0; i--)
         {
+            Debug.Log(i);
             if (CurrentHealth >= MeatPerSize[i-1])
             {
-                transform.localScale = Vector3.one * ((i - 1) * 0.5f + 1);
+                if (CurrentScale == i)
+                    return;
+                TweenSize(i);
                 CurrentScale = i;
+                PCM.controller.SetMaxSpeed(CurrentScale);
                 return; 
             }
         }
+    }
+    private void TweenSize(int scale)
+    {
+        Debug.Log("tweening " + scale);
+        GameManager.Instance.cameraManager.ScaleCamera(scale);
+        DOVirtual.Float(transform.localScale.x, ((scale - 1) * 0.5f + 1), 0.3f, (x) =>
+        {
+            transform.localScale = Vector3.one * x;
+        });
+        //transform.DOScale(Vector3.one * ((scale - 1) * 0.5f + 1), 0.3f);
+    }
+    private IEnumerator DamageFlash()
+    {
+        float currentFlashAmount = 0f;
+        float elapsedTime = 0f;
+        while (elapsedTime < flashDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            currentFlashAmount = Mathf.Lerp(1f, 0f, (elapsedTime / flashDuration));
+            block.SetFloat("_FlashAmount", currentFlashAmount);
+            block.SetTexture("_MainTex", rend.sprite.texture);
+            rend.SetPropertyBlock(block);
+            yield return null;
+        }
+        block.SetTexture("_MainTex", rend.sprite.texture);
+        block.SetFloat("_FlashAmount", 0);
+        rend.SetPropertyBlock(block);
     }
 
     public void IncreaseMeat()

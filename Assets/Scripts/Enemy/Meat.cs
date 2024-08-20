@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KevinCastejon.MoreAttributes;
+using DG.Tweening;
 
 public class Meat : MonoBehaviour
 {
@@ -18,12 +19,14 @@ public class Meat : MonoBehaviour
 
 	private bool hasCollided = false;
 
+	private Tween myTween;
 	public void Awake()
 	{
 		meatDecayTimer = GameManager.Instance.TimerManager.GenerateTimers(gameObject);
 	}
-	public void Initialize()
+	public void Initialize(Vector2 endpos)
 	{
+		myTween = transform.DOMove(endpos + (Vector2)transform.position, 0.5f);
 		//meatDecayTimer.SetTime(UnityEngine.Random.Range(1, maxMeatLifeTime));
 		animator.SetTrigger("fall");
 	}
@@ -44,6 +47,7 @@ public class Meat : MonoBehaviour
 
             // increase meat value
             GameManager.Instance.PCM.values.IncreaseMeat();
+			myTween.Kill();
             Destroy(gameObject);
         }
     }

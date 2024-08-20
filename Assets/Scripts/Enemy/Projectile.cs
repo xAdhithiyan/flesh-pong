@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KevinCastejon.MoreAttributes;
+using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class Projectile : MonoBehaviour
 		transform.right = Rtransform;
 		projectileSize = Scale;
 		projectileDamage = Scale;
-        transform.localScale *= projectileSize;
+        transform.localScale *= ((Scale - 1) * 0.5f + 1);
 		transform.localEulerAngles = GetEularAngleToDir(Vector2.down, dir);
     }
 	private void Update()
@@ -84,7 +85,7 @@ public class Projectile : MonoBehaviour
 		{
             lifeTime.SetTime(projectileLifetime);
             hitTarget.TakeDamage(projectileDamage, currentProjSpeed, out newSpeed);
-			Debug.Log(newSpeed);
+			//Debug.Log(newSpeed);
             if (newSpeed > 1)
             {
                 projectileDamage = newSpeed * projectileSize;
@@ -97,7 +98,7 @@ public class Projectile : MonoBehaviour
                 startReducingSpeed = true;
 				currentProjSpeed = 1;
             }
-            Debug.Log(rb.velocity.magnitude + " " + newSpeed);
+            //Debug.Log(rb.velocity.magnitude + " " + newSpeed);
         }
         rb.velocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal).normalized * currentProjSpeed * projectileSpeed;
 		lastDir = rb.velocity;

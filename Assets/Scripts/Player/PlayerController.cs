@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour, PCMInterface
     private float acceleration;
     [SerializeField]
     private float maxSpeed;
+
+
+
     [SerializeField]
     [ReadOnly]
     private float currentMaxSpeed;
@@ -112,6 +115,7 @@ public class PlayerController : MonoBehaviour, PCMInterface
         timers = GameManager.Instance.TimerManager.GenerateTimers(typeof(coolDownTimers), gameObject);
         //timers.times[(int)coolDownTimers.dashCD].OnTimeIsZero += DashResetter;
         currentMaxSpeed = maxSpeed;
+        initialSpeed = maxSpeed;
         currentDashCharges = dashCharges;
         drag = rb.drag;
     }
@@ -233,8 +237,19 @@ public class PlayerController : MonoBehaviour, PCMInterface
         }
         else
         {
-            rb.velocity = Vector2.zero;
+            rb.drag = drag;
         }
+    }
+
+    public void SetCurrentSpeed(int HammerState)
+    {
+        currentMaxSpeed = maxSpeed * MathF.Pow(0.75f, HammerState);
+    }
+    [SerializeField]
+    private float initialSpeed;
+    public void SetMaxSpeed(int Scale)
+    {
+        maxSpeed = initialSpeed * ((Scale - 1) * 0.25f + 1);
     }
     #endregion
 /*

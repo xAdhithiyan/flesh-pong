@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KevinCastejon.MoreAttributes;
 using Unity.Mathematics;
+using Random = UnityEngine.Random;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float enemySpawnDelayMin;
     [SerializeField] private float enemySpawnDelayMax;
     [SerializeField] private int maxEnemy;
-    [SerializeField, Range(5,50)] private int minEnemySpawnRange;
+    [SerializeField, Range(5,50)] public int minEnemySpawnRange;
     [SerializeField, Range(5,50)] private int maxEnemySpawnRange;
     [SerializeField, ReadOnly]
     private int currentEnemies;
@@ -34,11 +35,11 @@ public class EnemyManager : MonoBehaviour
     {
         if (spawnTimer.IsTimeZero() && currentEnemies < maxEnemy)
         {
-            Vector2 randPos = new Vector2(UnityEngine.Random.Range(minEnemySpawnRange, maxEnemySpawnRange), UnityEngine.Random.Range(minEnemySpawnRange, maxEnemySpawnRange));
-            randPos.x *= (UnityEngine.Random.Range(0, 2) < 1) ? 1 : -1;
-            randPos.y *= (UnityEngine.Random.Range(0, 2) < 1) ? 1 : -1;
+            Vector2 randPos = new Vector2(Random.Range(minEnemySpawnRange, maxEnemySpawnRange), UnityEngine.Random.Range(minEnemySpawnRange, maxEnemySpawnRange));
+            randPos.x *= (Random.Range(0, 2) < 1) ? 1 : -1;
+            randPos.y *= (Random.Range(0, 2) < 1) ? 1 : -1;
             Enemy temp = Instantiate(EnemyPrefab, (Vector3)randPos,quaternion.identity);
-            temp.Initialise(playerScale, projectileScale);
+            temp.Initialise(Mathf.Clamp(GameManager.Instance.PCM.values.GetCurrentScale() + ((Random.Range(1,4) > 2)? 1 : 0) + ((Random.Range(1, 4) > 2) ? -1 : 0),1,5), Random.Range(1,4));
             currentEnemies++;
             ResetTime();
         }

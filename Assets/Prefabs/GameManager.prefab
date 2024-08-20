@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawnDelayMin: 3
   enemySpawnDelayMax: 6
-  maxEnemy: 0
-  minEnemySpawnRange: 5
+  maxEnemy: 10
+  minEnemySpawnRange: 20
   maxEnemySpawnRange: 50
   currentEnemies: 0
   EnemyPrefab: {fileID: 3249774487179842288, guid: 1727ce831d2f61a4680f3d681aafce79, type: 3}
